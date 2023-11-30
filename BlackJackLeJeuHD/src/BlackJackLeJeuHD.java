@@ -5,75 +5,14 @@ import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
 
-public class BlackJackLeJeuHD {
-    private class DosCartes{
-        String nom;
-        String prix;
-
-        DosCartes(String nom, String prix){
-            this.nom = nom;
-            this.prix = prix;
-        }
-
-        public String dosCartesChoisi(){
-            return nom + "-" + prix;
-
-        }
-
-        public String getDosCartesChem(){
-            return "./asset/doscartes/" + dosCartesChoisi() + ".png";
-        }
-
-    }
-
-
-
-    private class Carte{
-        String valeur;
-        String type;
-
-        Carte(String valeur, String type){
-            this.valeur = valeur;
-            this.type = type;
-        }
-
-        public String toString() {              // pour convertir le nom de la carte par sa valeur - type comme enregistré dans le dossier carte.
-            return valeur + "-" + type;
-
-        }
-
-        public int getValue(){
-            if ("AJQK".contains(valeur)){ // A J Q K
-                if (valeur == "A") {
-                    return 11;
-                }
-                return 10;
-            }
-            return Integer.parseInt(valeur); //2 -> 10
-        }
-        public boolean estunAs(){
-            return valeur == "A";
-        }
-
-        public String getImageChem(){
-            return "./asset/cartes/" + toString() + ".png";
-        }
-
-
-
-    }
-
-
-
-
-        
+public class BlackJackLeJeuHD {        
 
     ArrayList<Carte> deck;
-    Random random = new Random(); // mélangé le deck
-
+    Random random = new Random(); // mélanger le deck
+    
     //dealer
     Carte hiddenCarte;
-    DosCartes doscartes;
+    Doscartes doscartes;
     ArrayList<Carte> dealerhand;
     int dealersomme;
     int dealerNbAs;
@@ -82,10 +21,6 @@ public class BlackJackLeJeuHD {
     ArrayList<Carte> mainjoueur;
     int joueurSomme;
     int joueurNbAs;
-
-
-
-
 
 
         public void gamewindow(){
@@ -114,7 +49,7 @@ public class BlackJackLeJeuHD {
             JPanel bouttonPanel = new JPanel();
 
             JButton hitBoutton = new JButton("Pioche");
-            JButton stayboutton = new javax.swing.JButton("Check");
+            JButton stayboutton = new JButton("Check");
             JButton replayboutton = new JButton("Rejouer");
 
             int valeurMise =  0;
@@ -143,19 +78,7 @@ public class BlackJackLeJeuHD {
             bouttonPanel.add(stayboutton);
             replayboutton.setFocusable(false);
             replayboutton.setEnabled(false);
-            bouttonPanel.add(replayboutton);
-
-            
-
-
-            
-            
-            
-            
-            
-            
-
-            
+            bouttonPanel.add(replayboutton);                
         
             
     
@@ -163,9 +86,6 @@ public class BlackJackLeJeuHD {
             //gamepanel
             int largCarte = 210;
             int hautCarte = 300;
-
-
-
 
 
     
@@ -225,7 +145,7 @@ public class BlackJackLeJeuHD {
                                 message = "GAGNE GAGNANT";
                                 CompteurVictoire_defaite(0);
                                 g.setColor(Color.ORANGE);
-                                ArgentJoueur.setText("" + (Integer.parseInt(ArgentJoueur.getText()) + 1.5* Integer.parseInt(miseJoueur.getText())));
+                                ArgentJoueur.setText("" + (Integer.parseInt(ArgentJoueur.getText()) + 2* Integer.parseInt(miseJoueur.getText())));
                                 miseJoueur.setText("0");
 
                             }
@@ -233,7 +153,7 @@ public class BlackJackLeJeuHD {
                                 message = " EGALITE DE LOOSER";
                                 CompteurVictoire_defaite(1);
                                 g.setColor(Color.WHITE);
-                                ArgentJoueur.setText("" + (Integer.parseInt(ArgentJoueur.getText()) + Integer.parseInt(miseJoueur.getText())));
+                                ArgentJoueur.setText("" + (int)(Integer.parseInt(ArgentJoueur.getText()) + Integer.parseInt(miseJoueur.getText())));
                                 miseJoueur.setText("0");
                                 
                             }
@@ -241,7 +161,7 @@ public class BlackJackLeJeuHD {
                                 message = "GAGNE GAGNANT";
                                 CompteurVictoire_defaite(0);
                                 g.setColor(Color.ORANGE);
-                                ArgentJoueur.setText("" + (Integer.parseInt(ArgentJoueur.getText()) + 1.5* (int)Integer.parseInt(miseJoueur.getText())));
+                                ArgentJoueur.setText("" + (int)(Integer.parseInt(ArgentJoueur.getText()) + 2* Integer.parseInt(miseJoueur.getText())));
                                 miseJoueur.setText("0");
                             }
                             else if ( joueurSomme < dealersomme) {
@@ -343,7 +263,7 @@ public class BlackJackLeJeuHD {
 
             optioButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e){
-                    optionMenu();
+                    MenuOption();;
                 }
             });
 
@@ -428,93 +348,7 @@ public class BlackJackLeJeuHD {
         }
     }
 
-
-    public void optionMenu(){
-        JFrame optionFrame = new JFrame("Option");
-
-        optionFrame.setSize(1000, 500);
-        optionFrame.setVisible(true);
-        optionFrame.setLocationRelativeTo(null);
-        optionFrame.setResizable(false);
-        optionFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-
-        //panel
-        JPanel buttonPanel = new JPanel();
-        /*
-        JPanel graphiquePanel = new JPanel(){
-                @Override
-                
-                public void paintComponent(Graphics g) {
-                    super.paintComponent(g);
-                    
-                
-
-                    try {
-
-
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-    
-            };
-            graphiquePanel.setBackground(Color.gray);
-            */
-
-        
-
-
-        //layout
-        Icon suivanIcon = new ImageIcon(getClass().getResource("./asset/suivant.png"));
-        Icon retourIcon = new ImageIcon(getClass().getResource("./asset/retour.png"));
-        Icon quitterIcon = new ImageIcon(getClass().getResource("./asset/quitter_petit.png"));
-        Icon dos_petitIcon = new ImageIcon(getClass().getResource("./asset/dos_petit.png"));
-    
-
-        //Jlabel
-        JLabel dos_petit = new JLabel(dos_petitIcon);
-
-
-        //Bouton
-        JButton graphiqueBasseBoutton = new JButton("Basse");
-        JButton graphiqueHauteBoutton = new JButton("Haute");
-        JButton suivanButton = new JButton("Suivant", suivanIcon);
-        JButton retourButton = new JButton("Retour", retourIcon);
-        JButton quitterButton = new JButton("Quitter", quitterIcon);
-
-
-
-        buttonPanel.add(quitterButton);
-        buttonPanel.add(retourButton);
-        buttonPanel.add(dos_petit);
-        buttonPanel.add(suivanButton);
-
-        // graphiquePanel.repaint();
-        //Affichage
-        optionFrame.setLayout(null);
-        optionFrame.add(buttonPanel, BorderLayout.SOUTH);
-        //optionFrame.add(graphiquePanel);
-        
-
-
-
-
-
-        
-
-        
-
-
-        
-
-        
-        
-    }
-
-
-
+//_________________________________________________MenuPrincipale____________________________________________
     public void MenuValid(){
         JFrame fene = new JFrame("BlackJackLeJeuHD");
         int fenlarg = 1800;
@@ -610,6 +444,12 @@ public class BlackJackLeJeuHD {
             
         }});
 
+        OptionBoutton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e){
+                MenuOption();
+            }
+        });
+
        Quitboutton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e){
             fene.dispose();
@@ -624,8 +464,54 @@ public class BlackJackLeJeuHD {
 
         
     }
+
+    //_____________________________________________________Option_______________________________________________________
+    public void MenuOption() {
+        JFrame frame = new JFrame("Menu d'options");
+        frame.setSize(800, 800);
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        
+
+        //icon
+        Icon suivanIcon = new ImageIcon(getClass().getResource("./asset/suivant.png"));
+        Icon retourIcon = new ImageIcon(getClass().getResource("./asset/retour.png"));
+        Icon quitterIcon = new ImageIcon(getClass().getResource("/asset/quitter_petit.png"));
+        Icon dos_petitIcon = new ImageIcon(getClass().getResource("./asset/dos_petit.png"));
+        Icon doscartesImage = new ImageIcon(getClass().getResource(""));
+
+        //dos de cartes
+        JButton doscartesImageJButton = new JButton(doscartesImage);
+        doscartesImageJButton.setBounds(300, 250, 210, 300 );
+        frame.add(doscartesImageJButton);
+
+        //bouton
+        JButton suivantJButton = new JButton(retourIcon);
+        suivantJButton.setBounds(5, 400, 50, 50);
+        suivantJButton.setFocusable(false);
+        frame.add(suivantJButton);
+
+        JButton retourJButton = new JButton(suivanIcon);
+        retourJButton.setBounds(730, 400, 50, 50);
+        retourJButton.setFocusable(false);
+        frame.add(retourJButton);
+        
+
+        JButton quitterJButton = new JButton(quitterIcon);
+        quitterJButton.setBounds(5, 5, 50, 50);
+        quitterJButton.setFocusable(false);
+        frame.add(quitterJButton);
+    
+
+        //fenêtre
+        frame.setLayout(null);
+        frame.setVisible(true);
+    }
         
     
+    //______________________________________________JEU______________________________________________________________
     public void startGame(){
         //deck
         buildDeck();
@@ -679,7 +565,7 @@ public class BlackJackLeJeuHD {
     public void buildDeck(){
         deck = new ArrayList<Carte>();
         String[] valeurs = { "A", "2", "3","4","5","6","7","8","9","10","J","Q","K"};
-        String[] types = {"T","CA","CO","P" };
+        String[] types = {"T","CA","CO","P","T","CA","CO","P","T","CA","CO","P","T","CA","CO","P" };
 
         for (int i = 0; i < types.length; i++) {
             for(int j = 0; j< valeurs.length; j++) {
@@ -726,6 +612,5 @@ public class BlackJackLeJeuHD {
 
     
 
-
-    }
+}
 
