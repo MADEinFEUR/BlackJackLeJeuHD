@@ -8,14 +8,21 @@ import javax.swing.border.Border;
 
 import netscape.javascript.JSException;
 
-public class BlackJackLeJeuHD {        
+public class BlackJackLeJeuHD {  
 
     ArrayList<Carte> deck;
     Random random = new Random(); // mélanger le deck
     
+    
+    public int numero_dos_carte = 0;
+    public int largCarte = 210;
+    public int hautCarte = 300;
+    public int fenlarg = 1800;
+    public int fenHaut = 1020;
+
+
     //dealer
     Carte hiddenCarte;
-    Doscartes doscartes;
     ArrayList<Carte> dealerhand;
     int dealersomme;
     int dealerNbAs;
@@ -27,11 +34,9 @@ public class BlackJackLeJeuHD {
 
 
         public void gamewindow(){
-            int fenlarg = 1800;
-            int fenHaut = 1020;
             
             //fenêtre
-            JFrame fene = new JFrame("BlackJack Le Jeu HD");
+            JFrame fene = new JFrame("BlackJack Le Jeu HD Casino éditon ");
             fene.setVisible(true);
             fene.setSize(fenlarg, fenHaut);
             fene.setLocationRelativeTo(null);
@@ -60,9 +65,11 @@ public class BlackJackLeJeuHD {
 
             JPanel panelgauche1 = new JPanel();
             BoxLayout box = new BoxLayout(panelgauche1, 1);
-            
+                      
+
+
             JButton deco1Button = new JButton(deco1);
-            JButton miser = new JButton("Miser");
+            JButton miser = new JButton("Miser 10 écus");
             JButton retourmenu = new JButton(menuIcon);
             JButton optioButton = new JButton(optIcon);
             
@@ -70,8 +77,6 @@ public class BlackJackLeJeuHD {
             //Jlabel
             JLabel miseJoueur = new JLabel("" + valeurMise, jetonIcon, 0);
             JLabel ArgentJoueur = new JLabel("" + argentJoueur, argentIcon, 0);
-
-
 
             deco1Button.setEnabled(false);
             miser.setFocusable(false);
@@ -87,8 +92,7 @@ public class BlackJackLeJeuHD {
     
     
             //gamepanel
-            int largCarte = 210;
-            int hautCarte = 300;
+            
 
 
     
@@ -107,7 +111,7 @@ public class BlackJackLeJeuHD {
                         
     
                         //carte face cachée
-                        Image carteFaceCacheImg = new ImageIcon(getClass().getResource("/asset/doscartes/base-0.png")).getImage();
+                        Image carteFaceCacheImg = new ImageIcon(getClass().getResource("/asset/doscartes/base.png")).getImage();
                         if (!stayboutton.isEnabled()){
                             carteFaceCacheImg = new ImageIcon(getClass().getResource(hiddenCarte.getImageChem())).getImage();
                         }
@@ -197,7 +201,6 @@ public class BlackJackLeJeuHD {
     
     
     
-    
             //affichage
             
             panelgauche1.setLayout(box);
@@ -240,8 +243,6 @@ public class BlackJackLeJeuHD {
                 
             });
             
-            
-                
             
 
             replayboutton.addActionListener(new ActionListener() {
@@ -311,6 +312,7 @@ public class BlackJackLeJeuHD {
         
         
         
+        
     System.out.println("execution...");
     }
 
@@ -354,8 +356,6 @@ public class BlackJackLeJeuHD {
 //_________________________________________________MenuPrincipale____________________________________________
     public void MenuValid(){
         JFrame fene = new JFrame("BlackJackLeJeuHD");
-        int fenlarg = 1800;
-        int fenHaut = 1020;
             
         //fenêtre
         fene.setVisible(true);
@@ -376,8 +376,7 @@ public class BlackJackLeJeuHD {
         Icon LogoIcon = new ImageIcon(getClass().getResource("./asset/logo.png"));
         
 
-        //titre
-        JLabel titre = new JLabel("BlackJackLeJeuHD");  
+        //titr
         JLabel logo = new JLabel(LogoIcon);
 
         logo.setBounds(0,   0,  1800, 1020);
@@ -450,6 +449,7 @@ public class BlackJackLeJeuHD {
         OptionBoutton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e){
                 MenuOption();
+                
             }
         });
 
@@ -470,25 +470,25 @@ public class BlackJackLeJeuHD {
 
     //_____________________________________________________Option_______________________________________________________
     public void MenuOption() {
+        String[] listedoscarte = {"base","style","foret","turbulax","furaxxx",
+        "grignotage","rouleboule","trifouille","gribouille","gerbotron",
+        "optimus_dos_de_carte","watermark","blitzkrieg","doucement_sur_la_zaza",
+        "le_mousseux_de_guise","jojo","snk","loli","malifood","la_jar_de_kader"};
+
+        
+        
+
         JFrame frame = new JFrame("Menu d'options");
         frame.setSize(800, 800);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        
-
         //icon
         Icon suivanIcon = new ImageIcon(getClass().getResource("./asset/suivant.png"));
         Icon retourIcon = new ImageIcon(getClass().getResource("./asset/retour.png"));
         Icon quitterIcon = new ImageIcon(getClass().getResource("/asset/quitter_petit.png"));
-        Icon dos_petitIcon = new ImageIcon(getClass().getResource("./asset/dos_petit.png"));
-        Icon doscartesImage = new ImageIcon(getClass().getResource(""));
-
-        //dos de cartes
-        JButton doscartesImageJButton = new JButton(doscartesImage);
-        doscartesImageJButton.setBounds(300, 250, 210, 300 );
-        frame.add(doscartesImageJButton);
+        Icon doscartesImage = new ImageIcon(getClass().getResource("./asset/doscartes/base.png"));
 
         //bouton
         JButton suivantJButton = new JButton(retourIcon);
@@ -506,11 +506,65 @@ public class BlackJackLeJeuHD {
         quitterJButton.setBounds(5, 5, 50, 50);
         quitterJButton.setFocusable(false);
         frame.add(quitterJButton);
-    
 
+
+        JPanel optionPanel = new JPanel(){
+            @Override
+                
+                public void paintComponent(Graphics dos) {
+                    super.paintComponent(dos);
+
+                    try {
+                        Image dosImage = new ImageIcon(getClass().getResource("./asset/doscartes/"+ listedoscarte[numero_dos_carte]+ ".png")).getImage();
+                        dos.drawImage(dosImage, 400, 400, largCarte, hautCarte, null);
+                    
+                } catch (Exception e) {
+                        e.printStackTrace();
+                    }       
+
+        quitterJButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e){
+                frame.dispose();
+            }
+        });
+
+        
+        suivantJButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e){
+                if(numero_dos_carte == 0){
+                    numero_dos_carte = 13;
+                }
+                numero_dos_carte -= 1;
+                System.out.println(listedoscarte[numero_dos_carte]);
+                
+
+
+            }
+        });
+
+        retourJButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e){
+                if(numero_dos_carte == 13){
+                    numero_dos_carte = 0;
+                }
+                numero_dos_carte += 1;
+                System.out.println(listedoscarte[numero_dos_carte]);
+                
+
+            }
+            
+        });
+        
+
+
+    }
+    };
+    
         //fenêtre
+        frame.add(optionPanel);
         frame.setLayout(null);
         frame.setVisible(true);
+    
     }
         
     
@@ -518,7 +572,7 @@ public class BlackJackLeJeuHD {
 
     public void startGame(){
         //deck
-       // Deck.buildDeck();
+        // Deck.buildDeck();
         deck = melangedeck(Deck.buildDeck());
 
         //dealer
