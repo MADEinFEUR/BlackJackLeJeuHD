@@ -4,6 +4,9 @@ import java.nio.channels.SelectableChannel;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
+import javax.swing.border.Border;
+
+import netscape.javascript.JSException;
 
 public class BlackJackLeJeuHD {        
 
@@ -98,7 +101,9 @@ public class BlackJackLeJeuHD {
                 
 
                     try {
-
+                        
+                            Image BG_DZ = new ImageIcon(getClass().getResource("./asset/fond.png")).getImage();
+                            g.drawImage(BG_DZ, 0, 0, null);                        
                         
     
                         //carte face cachée
@@ -112,9 +117,7 @@ public class BlackJackLeJeuHD {
                         for (int i = 0; i < dealerhand.size();i++){
                             Carte carte = dealerhand.get(i);
                             Image carteImg = new ImageIcon(getClass().getResource(carte.getImageChem())).getImage();
-                            g.drawImage(carteImg, largCarte + 360 + (largCarte + 5)*i, 20, largCarte, hautCarte, null);
-                            
-
+                            g.drawImage(carteImg, largCarte + 360 + (largCarte + 5)*i, 20, largCarte, hautCarte, null); 
                         };
                         
                         
@@ -187,7 +190,7 @@ public class BlackJackLeJeuHD {
                 }
     
             };
-            gamPanel.setBackground(new Color(53, 101,77));
+            
             
             
     
@@ -512,10 +515,11 @@ public class BlackJackLeJeuHD {
         
     
     //______________________________________________JEU______________________________________________________________
+
     public void startGame(){
         //deck
-        buildDeck();
-        melangedeck();
+       // Deck.buildDeck();
+        deck = melangedeck(Deck.buildDeck());
 
         //dealer
         dealerhand = new ArrayList<Carte>();
@@ -560,38 +564,22 @@ public class BlackJackLeJeuHD {
 
 
     }
-
-    
-    public void buildDeck(){
-        deck = new ArrayList<Carte>();
-        String[] valeurs = { "A", "2", "3","4","5","6","7","8","9","10","J","Q","K"};
-        String[] types = {"T","CA","CO","P","T","CA","CO","P","T","CA","CO","P","T","CA","CO","P" };
-
-        for (int i = 0; i < types.length; i++) {
-            for(int j = 0; j< valeurs.length; j++) {
-                Carte carte = new Carte(valeurs[j], types[i]);
-                deck.add(carte);
-            }
-        }
-
-        System.out.println("Préparation du deck :");
-        System.out.println(deck);
-
-    }
-
-    public void melangedeck(){
-        for (int i = 0; i< deck.size(); i++){
-            int j = random.nextInt(deck.size());
-            Carte currCarte = deck.get(i);
-            Carte randomCarte = deck.get(j);
-            deck.set(j, randomCarte);
-            deck.set(j, currCarte);
-
+    public ArrayList<Carte> melangedeck(ArrayList<Carte> deckPasMel ){
+        
+        for (int i = 0; i< deckPasMel.size(); i++){
+            int j = random.nextInt(deckPasMel.size());
+            Carte currCarte = deckPasMel.get(i);
+            Carte randomCarte = deckPasMel.get(j);
+            deckPasMel.set(j, randomCarte);
+            deckPasMel.set(j, currCarte);
         }
 
         System.out.println("Après le mélange :");
-        System.out.println(deck);
+        System.out.println(deckPasMel);
+        return deckPasMel;
     }
+    
+
 
     public int reductionAsJoueur(){
         while (joueurSomme > 21 && joueurNbAs > 0) {
@@ -606,8 +594,6 @@ public class BlackJackLeJeuHD {
             dealerNbAs -= 1;
         }
         return dealersomme ;
-
-
     }
 
     

@@ -2,8 +2,11 @@ import java.util.ArrayList;
 
 public class Deck {
     
-    public void Deck(){
+    public static ArrayList<Carte> buildDeck(){
+        ArrayList<Carte> deck;
+        
         deck = new ArrayList<Carte>();
+        
         String[] valeurs = { "A", "2", "3","4","5","6","7","8","9","10","J","Q","K"};
         String[] types = {"T","CA","CO","P","T","CA","CO","P","T","CA","CO","P","T","CA","CO","P" };
 
@@ -16,6 +19,8 @@ public class Deck {
 
         System.out.println("Préparation du deck :");
         System.out.println(deck);
+
+        return deck;
 
     }
     
