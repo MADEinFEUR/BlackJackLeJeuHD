@@ -462,7 +462,7 @@ public class BlackJackLeJeuHD {
         
         JLabel txt = new JLabel("Le dos de carte" + listedoscarte[numero_dos_carte]+"sera disponible à la prochaine partie !" );
         txt.setVisible(true);
-        txt.setBounds(850, 250, 150, 500);
+        
 
         //bouton
         int y_doscarte = 550;
@@ -529,13 +529,14 @@ public class BlackJackLeJeuHD {
                 dosdecartesButton.setEnabled(false);
                 dosCarteInit = listedoscarte[numero_dos_carte];
                 JFrameManager.register(Optionframe);
-                txt.setVisible(false);
+               // txt.setVisible(false);
             }
         });
 
         //fenêtre
         Optionframe.setLayout(null);
         Optionframe.setVisible(true);
+        Optionframe.add(txt);
         Optionframe.add(dosdecartesButton);
         Optionframe.add(quitterJButton);
         Optionframe.add(retourJButton);
