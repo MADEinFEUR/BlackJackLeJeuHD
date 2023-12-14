@@ -18,10 +18,14 @@ public class BlackJackLeJeuHD {
     public int numero_dos_carte = 0;
     public int largCarte = 210;
     public int hautCarte = 300;
-    public int fenlarg = 1800;
-    public int fenHaut = 1020;
+    public int fenlarg = 1920;
+    public int fenHaut = 1080;
+
+    public int valeurMise =  0;
+    public int argentJoueur = 500;
 
     public String dosCarteInit = "base";
+
 
 
     //dealer
@@ -61,9 +65,6 @@ public class BlackJackLeJeuHD {
             JButton hitBoutton = new JButton("Pioche");
             JButton stayboutton = new JButton("Check");
             JButton replayboutton = new JButton("Rejouer");
-
-            int valeurMise =  0;
-            int argentJoueur = 500;
 
             JPanel panelgauche1 = new JPanel();
             BoxLayout box = new BoxLayout(panelgauche1, 1);         
@@ -294,12 +295,8 @@ public class BlackJackLeJeuHD {
                 }
             });
 
-            
-
-
-
+        
             gamPanel.repaint();
-
 
         }
             
@@ -372,6 +369,7 @@ public class BlackJackLeJeuHD {
         ImageIcon quitterIcon = new ImageIcon(getClass().getResource("/asset/quitter_menu.png"), "Quitter");
         ImageIcon jouerIcon = new ImageIcon(getClass().getResource("/asset/jouer_menu.png"),"Jouer");
         Icon LogoIcon = new ImageIcon(getClass().getResource("./asset/logo.png"));
+        ImageIcon BoutiqueIcon = new ImageIcon(getClass().getResource("./asset/boutique.png"));
         
         //titre
         JLabel logo = new JLabel(LogoIcon);
@@ -390,8 +388,6 @@ public class BlackJackLeJeuHD {
         // Jouer
         int xp = (int)(xo + 200);
         JButton Playboutton = new JButton(jouerIcon);
-    
-        //Playboutton.setLayout(grid);
         Playboutton.setBounds(xp, y, 310, 470);
         Playboutton.setFocusable(false);
 
@@ -401,7 +397,15 @@ public class BlackJackLeJeuHD {
         JButton Quitboutton = new JButton(quitterIcon);
         Quitboutton.setFocusable(false);
         Quitboutton.setBounds( xq, y, 310, 470);
-      
+
+      //boutique Bouton
+        JButton boutikButton = new JButton(BoutiqueIcon);
+        boutikButton.setBounds(xq + 500, y - 150, 200, 200);
+        boutikButton.setFocusable(false);
+        boutikButton.setEnabled(true);
+        boutikButton.setBorderPainted(false);
+        boutikButton.setBackground(null);
+
         //affichage
         fene.setBackground(Color.MAGENTA);
         fene.setLayout(null);
@@ -410,6 +414,7 @@ public class BlackJackLeJeuHD {
         fene.add(OptionBoutton);
         fene.add(Playboutton);
         fene.add(Quitboutton);
+        fene.add(boutikButton);
         
        Playboutton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e){
@@ -429,7 +434,14 @@ public class BlackJackLeJeuHD {
        Quitboutton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e){
             fene.dispose();
-        }});   
+        }});
+        
+        boutikButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e){
+                BoutiqueOption();
+                fene.dispose();
+            }
+        });
     }
 
     //_____________________________________________________Option_______________________________________________________
@@ -438,7 +450,7 @@ public class BlackJackLeJeuHD {
         String[] listedoscarte = {"base","style","foret","turbulax","furaxxx",
         "grignotage","rouleboule","trifouille","gribouille","gerbotron",
         "optimus_dos_de_carte","watermark","blitzkrieg","doucement_sur_la_zaza",
-        "le_mousseux_de_guise","jojo","snk","loli","malifood","la_jar_de_kader"};
+        "le_mousseux_de_guise","jojo","snk","loli","malifood","la_jar_de_kader","speed_jack"};
 
         System.out.println("liste dos de carte :");
         System.out.println(listedoscarte.toString());
@@ -458,10 +470,17 @@ public class BlackJackLeJeuHD {
         //Jlabel
         JLabel BG_DZ_option = new JLabel(BG_DZ);
         BG_DZ_option.setBounds(0, 0, 1000, 1000);
+
         
         
-        JLabel txt = new JLabel("Le dos de carte" + listedoscarte[numero_dos_carte]+"sera disponible à la prochaine partie !" );
-        txt.setVisible(true);
+        
+        JLabel txt = new JLabel("Le dos de carte sera disponible à la prochaine partie !" );
+        txt.setFont(new Font("Arial", Font.PLAIN, 36));
+        txt.setBounds(50,700, 1000, 500);
+        txt.setBackground(Color.YELLOW);
+        txt.setForeground(Color.GREEN);
+        txt.setVisible(false);
+        
         
 
         //bouton
@@ -504,6 +523,8 @@ public class BlackJackLeJeuHD {
 
                 dosdecartesButton.setIcon(new ImageIcon(getClass().getResource("./asset/doscartes/"+ listedoscarte[numero_dos_carte]+".png")));               
                 dosdecartesButton.setEnabled(true);
+                txt.setVisible(false);
+                
 
             }
         });
@@ -520,6 +541,8 @@ public class BlackJackLeJeuHD {
 
                 dosdecartesButton.setIcon(new ImageIcon(getClass().getResource("./asset/doscartes/"+ listedoscarte[numero_dos_carte]+".png")));
                 dosdecartesButton.setEnabled(true);
+                txt.setVisible(false);
+
                 
             }
         });
@@ -529,7 +552,7 @@ public class BlackJackLeJeuHD {
                 dosdecartesButton.setEnabled(false);
                 dosCarteInit = listedoscarte[numero_dos_carte];
                 JFrameManager.register(Optionframe);
-               // txt.setVisible(false);
+                txt.setVisible(true);
             }
         });
 
@@ -542,6 +565,85 @@ public class BlackJackLeJeuHD {
         Optionframe.add(retourJButton);
         Optionframe.add(suivantJButton);
         Optionframe.add(BG_DZ_option);
+
+    }
+
+    //___________________________________________Boutique___________________________________________________________
+
+    public void BoutiqueOption(){
+
+        //fenêtre
+        JFrame boutiqueFrame = new JFrame();
+       
+        boutiqueFrame.setResizable(false);
+        boutiqueFrame.setLocation(0,0);
+        boutiqueFrame.setVisible(true);
+        boutiqueFrame.setLayout(null);
+        boutiqueFrame.setSize(1920,1080 );
+
+        //icon
+        Icon achatIcon1 = new ImageIcon(getClass().getResource("./asset/boutique1.png"));
+        Icon achatIcon2 = new ImageIcon(getClass().getResource("./asset/boutique2.png"));
+        Icon achatIcon3 = new ImageIcon(getClass().getResource("./asset/boutique3.png"));
+        Icon BG_DZ = new ImageIcon(getClass().getResource("./asset/fond_boutique.png"));
+
+
+
+
+        //Bouton
+        int xinit = 200;
+        int yinit = 100;
+        int largbout = 400;
+
+        JButton Pack_5e99 = new JButton(achatIcon1);
+        Pack_5e99.setFocusable(false);
+        Pack_5e99.setBounds(xinit,yinit, largbout,largbout);
+        Pack_5e99.setEnabled(true);
+
+        JButton Pack_19e99 = new JButton(achatIcon2);
+        Pack_19e99.setFocusable(false);
+        Pack_19e99.setBounds(xinit+50+largbout,yinit, largbout,largbout);
+        Pack_19e99.setEnabled(true);
+
+        JButton Pack_99e99 = new JButton(achatIcon3);
+        Pack_99e99.setFocusable(false);
+        Pack_99e99.setBounds(xinit+2*largbout+100,yinit, largbout,largbout);
+        Pack_99e99.setEnabled(true);
+
+
+
+
+        //Texte / Jlabel
+        JLabel BG_DZ_boutique = new JLabel(BG_DZ);
+        BG_DZ_boutique.setBounds(0, 0, 1920, 1080);
+
+
+
+        Pack_5e99.addActionListener(new ActionListener(){
+            public void actionPerformed (ActionEvent e){
+                Pack_5e99.setEnabled(false);
+            }});
+        
+        Pack_19e99.addActionListener(new ActionListener(){
+            public void actionPerformed (ActionEvent e){
+                Pack_19e99.setEnabled(false);
+                
+            }});
+        
+        Pack_99e99.addActionListener(new ActionListener(){
+            public void actionPerformed (ActionEvent e){
+                Pack_99e99.setEnabled(false);
+                
+            }});
+
+
+
+        //affichage
+        
+        boutiqueFrame.add(Pack_5e99);
+        boutiqueFrame.add(Pack_19e99);
+        boutiqueFrame.add(Pack_99e99);
+        boutiqueFrame.add(BG_DZ_boutique);
 
     }
         
