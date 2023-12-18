@@ -3,9 +3,13 @@ import java.awt.event.*;
 import java.lang.reflect.Array;
 import java.nio.channels.SelectableChannel;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
+
 
 import netscape.javascript.JSException;
 
@@ -13,19 +17,33 @@ public class BlackJackLeJeuHD {
 
     ArrayList<Carte> deck;
     Random random = new Random(); // mélanger le deck
+
+    //_______________curseur_____________
     
+    Image cursorImage = new ImageIcon(getClass().getResource("./asset/curseur.png")).getImage();
+    Cursor customCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "custom_cursor");
+
     
+    //___________Constante_______________
     private int numero_dos_carte = 0;
     private int largCarte = 210;
     private int hautCarte = 300;
     private int fenlarg = 1920;
     private int fenHaut = 1080;
 
+
+//_____________Variable globale__________
     private int debutPartie = 0;
     private int valeurMise =  0;
     private int argentJoueur = 1000;
 
     private String dosCarteInit = "base";
+
+    private String[] listedoscarte = {"base","foret","turbulax","furaxxx",
+        "grignotage","rouleboule","trifouille","gribouille","gerbotron",
+        "optimus_dos_de_carte","watermark","blitzkrieg","doucement_sur_la_zaza",
+        "le_mousseux_de_guise","minecraft","hotwheels","malifood","la_jar_de_kader","speed_jack","power_rangers","metal_fusion"};
+    private int dlc_anime = 1;
 
     private Image carteImg = new ImageIcon(getClass().getResource("/asset/doscartes/"+ dosCarteInit  +".png")).getImage();
     private Image carteImgjoueur = new ImageIcon(getClass().getResource("/asset/doscartes/"+ dosCarteInit  +".png")).getImage();
@@ -53,6 +71,7 @@ public class BlackJackLeJeuHD {
             fene.setLocationRelativeTo(null);
             fene.setResizable(false);
             fene.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            fene.setCursor(customCursor);
             
             
             //Image & icon
@@ -357,6 +376,7 @@ public class BlackJackLeJeuHD {
         
     BlackJackLeJeuHD() {
        MenuValid();
+       
 
        
         
@@ -412,6 +432,7 @@ public class BlackJackLeJeuHD {
         fene.setLocationRelativeTo(null);
         fene.setResizable(false);
         fene.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        fene.setCursor(customCursor);
 
         //Icon bouton
         ImageIcon optionIcon = new ImageIcon(getClass().getResource("./asset/option_menu.png"),"Option");
@@ -496,11 +517,6 @@ public class BlackJackLeJeuHD {
     //_____________________________________________________Option_______________________________________________________
     public void MenuOption() {
 
-        String[] listedoscarte = {"base","style","foret","turbulax","furaxxx",
-        "grignotage","rouleboule","trifouille","gribouille","gerbotron",
-        "optimus_dos_de_carte","watermark","blitzkrieg","doucement_sur_la_zaza",
-        "le_mousseux_de_guise","jojo","snk","loli","malifood","la_jar_de_kader","speed_jack","power_rangers","metal_fusion"};
-
         System.out.println("liste dos de carte :");
         System.out.println(listedoscarte.toString());
 
@@ -508,6 +524,7 @@ public class BlackJackLeJeuHD {
         Optionframe.setSize(1000, 1000);
         Optionframe.setResizable(false);
         Optionframe.setLocationRelativeTo(null);
+        Optionframe.setCursor(customCursor);
 
         //icon
         Icon suivanIcon = new ImageIcon(getClass().getResource("./asset/suivant.png"));
@@ -633,11 +650,13 @@ public class BlackJackLeJeuHD {
         boutiqueFrame.setVisible(true);
         boutiqueFrame.setLayout(null);
         boutiqueFrame.setSize(1920,1080 );
+        boutiqueFrame.setCursor(customCursor);
 
         //icon
-        Icon achatIcon1 = new ImageIcon(getClass().getResource("./asset/boutique1.png"));
-        Icon achatIcon2 = new ImageIcon(getClass().getResource("./asset/boutique2.png"));
-        Icon achatIcon3 = new ImageIcon(getClass().getResource("./asset/boutique3.png"));
+        Icon achatIcon1 = new ImageIcon(getClass().getResource("./asset/boutique_1.png"));
+        Icon achatIcon2 = new ImageIcon(getClass().getResource("./asset/boutique_2.png"));
+        Icon achatIcon3 = new ImageIcon(getClass().getResource("./asset/boutique_3.png"));
+        Icon achatIcon4 = new ImageIcon(getClass().getResource("./asset/boutique4.png"));
         Icon BG_DZ = new ImageIcon(getClass().getResource("./asset/fond_boutik.png"));
         Icon quitterIcon = new ImageIcon(getClass().getResource("./asset/quitter_petit.png"));
 
@@ -663,6 +682,14 @@ public class BlackJackLeJeuHD {
         Pack_99e99.setFocusable(false);
         Pack_99e99.setBounds(xinit+2*largbout+100,yinit, largbout,largbout);
         Pack_99e99.setEnabled(true);
+
+        JButton Pack_anime = new JButton(achatIcon4);
+        Pack_anime.setFocusable(false);
+        Pack_anime.setBounds(xinit - 75,yinit + largbout + 100, 1500,300);
+        if(dlc_anime == 0){
+            Pack_anime.setEnabled(false);
+        }
+        
 
         JButton quitter = new JButton(quitterIcon);
         quitter.setFocusable(false);
@@ -713,6 +740,33 @@ public class BlackJackLeJeuHD {
                 argentJoueur = argentJoueur + 40000;
                 
             }});
+
+        Pack_anime.addActionListener(new ActionListener(){
+            public void actionPerformed (ActionEvent e){
+                if (dlc_anime == 1){
+                    Pack_anime.setEnabled(false);
+                    achat_txt.setText("8.000 Sous et 4 Dos ajoutés au compte");
+                    achat_txt.setBounds(xinit - 70 + 100,yinit + largbout + 200, 1000, 500);
+                    achat_txt.setVisible(true);
+                    argentJoueur = argentJoueur + 40000;
+
+                    ArrayList<String> dosList = new ArrayList<>(Arrays.asList(listedoscarte));
+                    dosList.add("snk");
+                    dosList.add("naruto");
+                    dosList.add("jojo");
+                    dosList.add("hunter_x_hunter");
+                    dosList.add("dragon_ball_z");
+                    listedoscarte = dosList.toArray(new String[0]);
+
+                    System.out.println("pack anime acheté, voici la nouvelle liste de dos de cartes :");
+                    System.out.println(listedoscarte);
+
+                    dlc_anime = 0;
+
+                }
+
+                
+            }});
         
         quitter.addActionListener(new ActionListener(){
             public void actionPerformed (ActionEvent e){
@@ -729,13 +783,14 @@ public class BlackJackLeJeuHD {
         boutiqueFrame.add(Pack_5e99);
         boutiqueFrame.add(Pack_19e99);
         boutiqueFrame.add(Pack_99e99);
+        boutiqueFrame.add(Pack_anime);
         boutiqueFrame.add(quitter);
         boutiqueFrame.add(achat_txt);
         boutiqueFrame.add(BG_DZ_boutique);
 
 
     }
-        
+
     
     //______________________________________________JEU______________________________________________________________
 
