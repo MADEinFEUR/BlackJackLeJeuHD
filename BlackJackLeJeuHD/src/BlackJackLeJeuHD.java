@@ -172,6 +172,9 @@ public class BlackJackLeJeuHD {
                             System.out.println("Stay");
                             System.out.println(dealersomme);
                             System.out.println(joueurSomme);
+                        if(replayboutton.isEnabled()){
+                            stayboutton.setEnabled(false);
+                        }
 
                         if(!Playboutton.isEnabled()){
                             replayboutton.setEnabled(true);
