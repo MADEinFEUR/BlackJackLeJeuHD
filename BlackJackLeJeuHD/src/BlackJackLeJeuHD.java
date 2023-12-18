@@ -112,7 +112,6 @@ public class BlackJackLeJeuHD {
             replayboutton.setFocusable(false);
             replayboutton.setEnabled(false);
             bouttonPanel.add(replayboutton); 
-            
             Playboutton.setEnabled(true);
             
         
@@ -165,23 +164,22 @@ public class BlackJackLeJeuHD {
                             g.drawImage(carteImgjoueur, 350 + (largCarte + 5)*i, 625, largCarte, hautCarte, null);
                         };
 
+                                                  
+
                         
                         if (!stayboutton.isEnabled()){
+                           
                             replayboutton.setEnabled(true);
                             dealersomme = reductionAsDealer();
                             joueurSomme = reductionAsJoueur();
                             System.out.println("Stay");
                             System.out.println(dealersomme);
                             System.out.println(joueurSomme);
+                       
+                            
+                            
                         
                         
-                        
-                            if(!Playboutton.isEnabled()){
-                            replayboutton.setEnabled(true);
-                            hitBoutton.setEnabled(true);
-                            stayboutton.setEnabled(true);
-                            miser.setEnabled(false);  
-                            }
 
                             String message = "";
                             if (joueurSomme > 21 ) {
@@ -273,6 +271,7 @@ public class BlackJackLeJeuHD {
                         joueurSomme += carte.getValue();
                         joueurNbAs += carte.estunAs()? 1 : 0;
                         mainjoueur.add(carte);
+                        
                         if (reductionAsJoueur() > 21) {
                             hitBoutton.setEnabled(false);;
                         }
