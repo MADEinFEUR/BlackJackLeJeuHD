@@ -15,16 +15,20 @@ public class BlackJackLeJeuHD {
     Random random = new Random(); // mélanger le deck
     
     
-    public int numero_dos_carte = 0;
-    public int largCarte = 210;
-    public int hautCarte = 300;
-    public int fenlarg = 1920;
-    public int fenHaut = 1080;
+    private int numero_dos_carte = 0;
+    private int largCarte = 210;
+    private int hautCarte = 300;
+    private int fenlarg = 1920;
+    private int fenHaut = 1080;
 
-    public int valeurMise =  0;
-    public int argentJoueur = 500;
+    private int debutPartie = 0;
+    private int valeurMise =  0;
+    private int argentJoueur = 1000;
 
-    public String dosCarteInit = "base";
+    private String dosCarteInit = "base";
+
+    private Image carteImg = new ImageIcon(getClass().getResource("/asset/doscartes/"+ dosCarteInit  +".png")).getImage();
+    private Image carteImgjoueur = new ImageIcon(getClass().getResource("/asset/doscartes/"+ dosCarteInit  +".png")).getImage();
 
 
 
@@ -65,12 +69,13 @@ public class BlackJackLeJeuHD {
             JButton hitBoutton = new JButton("Pioche");
             JButton stayboutton = new JButton("Check");
             JButton replayboutton = new JButton("Rejouer");
+            JButton Playboutton = new JButton("LANCER LA PARTIE!");
 
             JPanel panelgauche1 = new JPanel();
             BoxLayout box = new BoxLayout(panelgauche1, 1);         
 
             JButton deco1Button = new JButton(deco1);
-            JButton miser = new JButton("Miser 10 écus");
+            JButton miser = new JButton("Miser 10 sous");
             JButton retourmenu = new JButton(menuIcon);
             JButton optioButton = new JButton(optIcon);
             
@@ -87,45 +92,59 @@ public class BlackJackLeJeuHD {
             bouttonPanel.add(stayboutton);
             replayboutton.setFocusable(false);
             replayboutton.setEnabled(false);
-            bouttonPanel.add(replayboutton);                
-        
+            bouttonPanel.add(replayboutton); 
             
-    
-    
+            Playboutton.setEnabled(true);
+            
+        
             //gamepanel
-               
             JPanel gamPanel = new JPanel(){
                 @Override
                 
                 public void paintComponent(Graphics g) {
                     super.paintComponent(g);
                     
-                    try {
-                                               
-                        Image BG_DZ = new ImageIcon(getClass().getResource("./asset/fond.png")).getImage();
-                        g.drawImage(BG_DZ, 0, 0, null);                        
+                    try {                
+                        Image BG_DZ = new ImageIcon(getClass().getResource("./asset/fond_avant_partie.png")).getImage();
+                        g.drawImage(BG_DZ, 0, 0, null);
+                        if(!Playboutton.isEnabled()){
+                            BG_DZ = new ImageIcon(getClass().getResource("./asset/fond.png")).getImage();
+                            g.drawImage(BG_DZ, 0, 0, null);
+
+                        }
+
+                        
+                        
+                        
                         
                         //carte face cachée
                         Image carteFaceCacheImg = new ImageIcon(getClass().getResource("/asset/doscartes/"+ dosCarteInit  +".png")).getImage();
                         if (!stayboutton.isEnabled()){
                             carteFaceCacheImg = new ImageIcon(getClass().getResource(hiddenCarte.getImageChem())).getImage();
                         }
-                        g.drawImage(carteFaceCacheImg, 350, 20, largCarte, hautCarte, null);
-                        
+                        g.drawImage(carteFaceCacheImg, largCarte + 140, 20, largCarte, hautCarte, null);
+ 
+                                              
     
                         //carte du dealer
                         for (int i = 0; i < dealerhand.size();i++){
                             Carte carte = dealerhand.get(i);
-                            Image carteImg = new ImageIcon(getClass().getResource(carte.getImageChem())).getImage();
-                            g.drawImage(carteImg, largCarte + 360 + (largCarte + 5)*i, 20, largCarte, hautCarte, null); 
+                            carteImg = new ImageIcon(getClass().getResource("/asset/doscartes/"+ dosCarteInit  +".png")).getImage();
+                            if(!Playboutton.isEnabled()){
+                                carteImg = new ImageIcon(getClass().getResource(carte.getImageChem())).getImage();
+                            }
+                            g.drawImage(carteImg, largCarte + 360 + (largCarte + 5)*i, 20, largCarte, hautCarte, null);
                         };
                         
                         //carte joueur
                         for (int i = 0; i < mainjoueur.size();i++){
                             Carte carte = mainjoueur.get(i);
-                            Image carteImg = new ImageIcon(getClass().getResource(carte.getImageChem())).getImage();
-                            g.drawImage(carteImg, 350 + (largCarte + 5)*i, 625, largCarte, hautCarte, null);
-                        }
+                            carteImgjoueur = new ImageIcon(getClass().getResource("/asset/doscartes/"+ dosCarteInit  +".png")).getImage();
+                            if(!Playboutton.isEnabled()){
+                                carteImgjoueur = new ImageIcon(getClass().getResource(carte.getImageChem())).getImage();
+                            }                            
+                            g.drawImage(carteImgjoueur, 350 + (largCarte + 5)*i, 625, largCarte, hautCarte, null);
+                        };
 
                         if (!stayboutton.isEnabled()){
                             replayboutton.setEnabled(true);
@@ -135,11 +154,19 @@ public class BlackJackLeJeuHD {
                             System.out.println(dealersomme);
                             System.out.println(joueurSomme);
 
+                        if(!Playboutton.isEnabled()){
+                            replayboutton.setEnabled(true);
+                            hitBoutton.setEnabled(true);
+                            stayboutton.setEnabled(true);
+                            miser.setEnabled(false);  
+                        }
+
                             String message = "";
                             if (joueurSomme > 21 ) {
                                 message = " PERDU LOOSER";
                                 CompteurVictoire_defaite(1);
                                 g.setColor(Color.RED);
+                                argentJoueur = argentJoueur - Integer.parseInt(miseJoueur.getText());
                                 miseJoueur.setText("0");
 
                             }
@@ -147,6 +174,7 @@ public class BlackJackLeJeuHD {
                                 message = "GAGNE GAGNANT";
                                 CompteurVictoire_defaite(0);
                                 g.setColor(Color.ORANGE);
+                                argentJoueur = argentJoueur + 2*Integer.parseInt(miseJoueur.getText());
                                 ArgentJoueur.setText("" + (Integer.parseInt(ArgentJoueur.getText()) + 2* Integer.parseInt(miseJoueur.getText())));
                                 miseJoueur.setText("0");
 
@@ -155,6 +183,7 @@ public class BlackJackLeJeuHD {
                                 message = " EGALITE DE LOOSER";
                                 CompteurVictoire_defaite(1);
                                 g.setColor(Color.WHITE);
+                                argentJoueur = argentJoueur + Integer.parseInt(miseJoueur.getText());
                                 ArgentJoueur.setText("" + (int)(Integer.parseInt(ArgentJoueur.getText()) + Integer.parseInt(miseJoueur.getText())));
                                 miseJoueur.setText("0");
                                 
@@ -163,6 +192,7 @@ public class BlackJackLeJeuHD {
                                 message = "GAGNE GAGNANT";
                                 CompteurVictoire_defaite(0);
                                 g.setColor(Color.ORANGE);
+                                argentJoueur = argentJoueur + 2*Integer.parseInt(miseJoueur.getText());
                                 ArgentJoueur.setText("" + (int)(Integer.parseInt(ArgentJoueur.getText()) + 2* Integer.parseInt(miseJoueur.getText())));
                                 miseJoueur.setText("0");
                             }
@@ -170,6 +200,7 @@ public class BlackJackLeJeuHD {
                                 message = "PERDU LOOSER";
                                 CompteurVictoire_defaite(1);
                                 g.setColor(Color.RED);
+                                argentJoueur = argentJoueur - Integer.parseInt(miseJoueur.getText());
                                 miseJoueur.setText("0");
                             }
                             
@@ -205,51 +236,72 @@ public class BlackJackLeJeuHD {
             panelgauche1.add(miser);
             panelgauche1.add(miseJoueur);
             panelgauche1.add(ArgentJoueur);
+            panelgauche1.add(Playboutton); 
+
             fene.add(panelgauche1, BorderLayout.WEST);
             fene.add(gamPanel);
             fene.add(bouttonPanel, BorderLayout.SOUTH);
 
-            if (JFrameManager.getCount() == 0){
-                gamPanel.repaint();
-            }
+            
 
             hitBoutton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e){
-                    Carte carte = deck.remove(deck.size()-1);
-                    joueurSomme += carte.getValue();
-                    joueurNbAs += carte.estunAs()? 1 : 0;
-                    mainjoueur.add(carte);
-                    if (reductionAsJoueur() > 21) {
-                        hitBoutton.setEnabled(false);;
+                    if (!Playboutton.isEnabled()){
+                        Carte carte = deck.remove(deck.size()-1);
+                        joueurSomme += carte.getValue();
+                        joueurNbAs += carte.estunAs()? 1 : 0;
+                        mainjoueur.add(carte);
+                        if (reductionAsJoueur() > 21) {
+                            hitBoutton.setEnabled(false);;
+                        }
+                        gamPanel.repaint();
                     }
-                    gamPanel.repaint();
             }});
 
             stayboutton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    hitBoutton.setEnabled(false);
-                    stayboutton.setEnabled(false);
+                    if (!Playboutton.isEnabled()){
+                        hitBoutton.setEnabled(false);
+                        stayboutton.setEnabled(false);
 
-                    while (dealersomme < 17) {
-                        Carte carte = deck.remove(deck.size()-1);
-                        dealersomme += carte.getValue();
-                        dealerNbAs += carte.estunAs()? 1 : 0;
-                        dealerhand.add(carte);
+                        while (dealersomme < 17) {
+                            Carte carte = deck.remove(deck.size()-1);
+                            dealersomme += carte.getValue();
+                            dealerNbAs += carte.estunAs()? 1 : 0;
+                            dealerhand.add(carte);
+                        }
+                        gamPanel.repaint();
                     }
-                    gamPanel.repaint();
                 
                 }
                 
             });
+
+
+            Playboutton.addActionListener(new ActionListener(){
+            public void actionPerformed (ActionEvent e){
+                
+                Playboutton.setEnabled(false);
+                gamPanel.repaint();
+                miser.setEnabled(false);
+                
+            }});
             
             
 
             replayboutton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e){
-                    startGame();
-                    stayboutton.setEnabled(true);
-                    hitBoutton.setEnabled(true);
-                    replayboutton.setEnabled(false);
+                    if(!Playboutton.isEnabled()){
+                        startGame();
+                        stayboutton.setEnabled(true);
+                        hitBoutton.setEnabled(true);
+                        replayboutton.setEnabled(false);
+                        gamPanel.repaint();
+                        carteImg = new ImageIcon(getClass().getResource("/asset/doscartes/"+ dosCarteInit  +".png")).getImage();
+
+                    }
+                    Playboutton.setEnabled(true);
+                    miser.setEnabled(true);
                     gamPanel.repaint();
                     
                 }
@@ -295,7 +347,6 @@ public class BlackJackLeJeuHD {
                 }
             });
 
-        
             gamPanel.repaint();
 
         }
@@ -330,8 +381,6 @@ public class BlackJackLeJeuHD {
             sousfinal = sousTotal + mise;
         }
         return sousfinal ;
-
-
     }
 
 
@@ -450,7 +499,7 @@ public class BlackJackLeJeuHD {
         String[] listedoscarte = {"base","style","foret","turbulax","furaxxx",
         "grignotage","rouleboule","trifouille","gribouille","gerbotron",
         "optimus_dos_de_carte","watermark","blitzkrieg","doucement_sur_la_zaza",
-        "le_mousseux_de_guise","jojo","snk","loli","malifood","la_jar_de_kader","speed_jack"};
+        "le_mousseux_de_guise","jojo","snk","loli","malifood","la_jar_de_kader","speed_jack","power_rangers","metal_fusion"};
 
         System.out.println("liste dos de carte :");
         System.out.println(listedoscarte.toString());
@@ -501,6 +550,8 @@ public class BlackJackLeJeuHD {
         JButton dosdecartesButton = new JButton(dosinit);
         dosdecartesButton.setBounds(260, y_doscarte - 370, 480, 700);
         dosdecartesButton.setFocusable(false);
+
+    
 
 
     quitterJButton.addActionListener(new ActionListener() {
@@ -556,6 +607,8 @@ public class BlackJackLeJeuHD {
             }
         });
 
+       
+
         //fenêtre
         Optionframe.setLayout(null);
         Optionframe.setVisible(true);
@@ -585,13 +638,14 @@ public class BlackJackLeJeuHD {
         Icon achatIcon1 = new ImageIcon(getClass().getResource("./asset/boutique1.png"));
         Icon achatIcon2 = new ImageIcon(getClass().getResource("./asset/boutique2.png"));
         Icon achatIcon3 = new ImageIcon(getClass().getResource("./asset/boutique3.png"));
-        Icon BG_DZ = new ImageIcon(getClass().getResource("./asset/fond_boutique.png"));
+        Icon BG_DZ = new ImageIcon(getClass().getResource("./asset/fond_boutik.png"));
+        Icon quitterIcon = new ImageIcon(getClass().getResource("./asset/quitter_petit.png"));
 
 
 
 
         //Bouton
-        int xinit = 200;
+        int xinit = 250;
         int yinit = 100;
         int largbout = 400;
 
@@ -610,29 +664,61 @@ public class BlackJackLeJeuHD {
         Pack_99e99.setBounds(xinit+2*largbout+100,yinit, largbout,largbout);
         Pack_99e99.setEnabled(true);
 
+        JButton quitter = new JButton(quitterIcon);
+        quitter.setFocusable(false);
+        quitter.setBounds(50,50, 50,50);
+        quitter.setEnabled(true);
+
 
 
 
         //Texte / Jlabel
         JLabel BG_DZ_boutique = new JLabel(BG_DZ);
-        BG_DZ_boutique.setBounds(0, 0, 1920, 1080);
+        BG_DZ_boutique.setBounds(0, 0, 1800, 1080);
+
+        JLabel achat_txt = new JLabel("Sous ajoutés");
+        achat_txt.setFont(new Font("Arial", Font.PLAIN, 36));
+        achat_txt.setBounds(50,700, 1000, 500);
+        achat_txt.setBackground(Color.YELLOW);
+        achat_txt.setForeground(Color.GREEN);
+        achat_txt.setVisible(false);
 
 
 
         Pack_5e99.addActionListener(new ActionListener(){
             public void actionPerformed (ActionEvent e){
                 Pack_5e99.setEnabled(false);
+                achat_txt.setText("1.000 Sous ajoutés au compte");
+                achat_txt.setBounds(xinit,yinit + 200, 1000, 500);
+                achat_txt.setVisible(true);
+                argentJoueur = argentJoueur + 1000;
             }});
         
         Pack_19e99.addActionListener(new ActionListener(){
             public void actionPerformed (ActionEvent e){
                 Pack_19e99.setEnabled(false);
+                achat_txt.setText("10.000 Sous ajoutés au compte");
+                achat_txt.setBounds(xinit+50+largbout,yinit+200, 1000, 500);
+                achat_txt.setVisible(true);
+                argentJoueur = argentJoueur + 10000;
                 
             }});
         
         Pack_99e99.addActionListener(new ActionListener(){
             public void actionPerformed (ActionEvent e){
                 Pack_99e99.setEnabled(false);
+                achat_txt.setText("40.000 Sous ajoutés au compte");
+                achat_txt.setBounds(xinit+2*largbout+100,yinit + 200, 1000, 500);
+                achat_txt.setVisible(true);
+                argentJoueur = argentJoueur + 40000;
+                
+            }});
+        
+        quitter.addActionListener(new ActionListener(){
+            public void actionPerformed (ActionEvent e){
+                MenuValid();
+                boutiqueFrame.dispose();
+
                 
             }});
 
@@ -643,7 +729,10 @@ public class BlackJackLeJeuHD {
         boutiqueFrame.add(Pack_5e99);
         boutiqueFrame.add(Pack_19e99);
         boutiqueFrame.add(Pack_99e99);
+        boutiqueFrame.add(quitter);
+        boutiqueFrame.add(achat_txt);
         boutiqueFrame.add(BG_DZ_boutique);
+
 
     }
         
