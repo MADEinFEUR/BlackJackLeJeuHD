@@ -748,7 +748,7 @@ public class BlackJackLeJeuHD {
                     achat_txt.setText("8.000 Sous et 4 Dos ajoutés au compte");
                     achat_txt.setBounds(xinit - 70 + 100,yinit + largbout + 200, 1000, 500);
                     achat_txt.setVisible(true);
-                    argentJoueur = argentJoueur + 40000;
+                    argentJoueur = argentJoueur + 8000;
 
                     ArrayList<String> dosList = new ArrayList<>(Arrays.asList(listedoscarte));
                     dosList.add("snk");
