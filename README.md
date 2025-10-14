@@ -66,4 +66,4 @@ All in-game currency and rewards are virtual.
 
 ---
 
-© 2024 BlackJack: HD Casino — Battle Royale Arcade Deluxe Collection. All rights reserved.
+© 2023 BlackJack Le Jeu HD Casino Edition Battle Royale Version Arcade Deluxe Collection — BJLJHCEBRVADC. All rights reserved.
